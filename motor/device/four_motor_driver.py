@@ -92,7 +92,7 @@ def _drive_motor(position: MotorPosition, direction: MotorDirection, speed: floa
     if speed > 1:
         raise ValueError("Maximum speed is 1.0")
     motor = motors[position]
-    GPIO.output(motor.direction, GPIO.LOW if direction == MotorDirection.BACKWARD else GPIO.HIGH)
+    GPIO.output(motor.direction_pin, GPIO.LOW if direction == MotorDirection.BACKWARD else GPIO.HIGH)
     motor.direction = direction
     if motor.state == MotorState.IDLE:
         motor.pwm.start(speed * 100)
