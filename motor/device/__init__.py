@@ -1,7 +1,7 @@
 from importlib import import_module
 from typing import Dict
 
-modules = {"4wd": "4wd"}
+modules = {"four_motor_driver": "four_motor_driver"}
 
 active_device = None
 _active_module = None
