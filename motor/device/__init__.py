@@ -17,7 +17,7 @@ stop: callable
 
 def initialize(device_name: str, device_options: Dict):
     global _active_module
-    methods = ["get_meaurements", "cleanup", "drive", "turn", "turn_left", "turn_right", "stop"]
+    methods = ["get_measurements", "cleanup", "drive", "turn", "turn_left", "turn_right", "stop"]
     module_name = modules[device_name]
     _active_module = import_module(f"motor.device.{module_name}")
     getattr(_active_module, "initialize")(device_options)

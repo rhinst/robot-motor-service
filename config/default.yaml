@@ -8,12 +8,12 @@ device:
   name: "four_motor_driver"
   options:
     direction_pins:
-      front_left: 1
+      front_left: 17
       front_right: 3
       rear_left: 5
       rear_right: 7
     speed_pins:
-      front_left: 2
+      front_left: 27
       front_right: 4
       rear_left: 6
       rear_right: 8

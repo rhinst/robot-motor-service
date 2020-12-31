@@ -1,55 +1,25 @@
 from typing import Dict, Union
-from enum import Enum
-from dataclasses import dataclass
 
+from motor.enum import (
+    MotorPosition,
+    MotorDirection,
+    MotorState,
+    DriveDirection,
+    TurnDirection
+)
+from motor.motor import Motor
 from motor.gpio import GPIO
+from motor.logging import  logger
 
 PWM_FREQUENCY = 500
-
-
-class MotorPosition(Enum):
-    FRONT_LEFT = 1
-    FRONT_RIGHT = 2
-    REAR_LEFT = 3
-    REAR_RIGHT = 4
-
-
-class MotorDirection(Enum):
-    FORWARD = 1
-    BACKWARD = 2
-
-
-class MotorState(Enum):
-    IDLE = 1
-    RUNNING = 2
-
-
-class DriveDirection(Enum):
-    FORWARD = 1
-    BACKWARD = 2
-
-
-class TurnDirection(Enum):
-    LEFT = 1
-    RIGHT = 2
-
-
-@dataclass
-class Motor:
-    direction: MotorDirection
-    speed: float
-    direction_pin: int
-    speed_pin: int
-    pwm: Union[GPIO.PWM, None]
-    state: MotorState
-
 
 motors: Dict[MotorPosition, Motor]
 
 
 def initialize(options: Dict):
     global motors
-    for pos_name, pos_index in MotorPosition.__members__:
+    motors = {}
+    for pos_name, pos_index in MotorPosition.__members__.items():
         direction_pin = options["direction_pins"][pos_name.lower()]
         speed_pin = options["speed_pins"][pos_name.lower()]
         motors[pos_index] = Motor(
@@ -61,10 +31,10 @@ def initialize(options: Dict):
             state=MotorState.IDLE
         )
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup([motor.direction_pin for motor in motors.values()], GPIO.OUT)
-    GPIO.setup([motor.speed_pin for motor in motors.values()], GPIO.OUT)
     for motor in motors.values():
-        motor.pwm = GPIO.PWM(motor.speed_pin, PWM_FREQUENCY),
+        GPIO.setup(motor.direction_pin, GPIO.OUT)
+        GPIO.setup(motor.speed_pin, GPIO.OUT)
+        motor.pwm = GPIO.PWM(motor.speed_pin, PWM_FREQUENCY)
 
 
 def get_measurements():
@@ -73,6 +43,7 @@ def get_measurements():
 
 
 def drive(direction: DriveDirection, speed: float):
+    logger.debug("Driving!")
     if direction not in list(DriveDirection):
         raise ValueError("Unrecognized drive direction")
     if speed < 0:
@@ -132,6 +103,7 @@ def _drive_motor(position: MotorPosition, direction: MotorDirection, speed: floa
 
 
 def stop():
+    logger.debug("Stopping!")
     for motor in motors.values():
         motor.speed = 0.0
         motor.pwm.stop()
