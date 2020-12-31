@@ -4,7 +4,7 @@ Description=Robot Motor Service
 [Service]
 Type=simple
 WorkingDirectory=/robot/motor
-ExecStart=/usr/bin/python -m motor
+ExecStart=/robot/motor/venv/bin/motor
 
 [Install]
 WantedBy=multi-user.target
