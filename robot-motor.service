@@ -1,0 +1,10 @@
+[Unit]
+Description=Robot Motor Service
+
+[Service]
+Type=simple
+WorkingDirectory=/robot/motor
+ExecStart=/usr/bin/python -m motor
+
+[Install]
+WantedBy=multi-user.target

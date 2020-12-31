@@ -1,0 +1,19 @@
+logging:
+  level: "INFO"
+  filename: ""
+redis:
+  host: "localhost"
+  port: 6379
+device:
+  name: "4wd"
+  options:
+    direction_pins:
+      front_left: 1
+      front_right: 3
+      rear_left: 5
+      rear_right: 7
+    speed_pins:
+      front_left: 2
+      front_right: 4
+      rear_left: 6
+      rear_right: 8
