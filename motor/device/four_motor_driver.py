@@ -31,8 +31,10 @@ def initialize(options: Dict):
             state=MotorState.IDLE
         )
     GPIO.setmode(GPIO.BCM)
-    for motor in motors.values():
+    for position, motor in motors.items():
+        logger.debug(f"Using pin {motor.direction_pin} for direction on motor {position}")
         GPIO.setup(motor.direction_pin, GPIO.OUT)
+        logger.debug(f"Using pin {motor.speed} for speed on motor {position}")
         GPIO.setup(motor.speed_pin, GPIO.OUT)
         motor.pwm = GPIO.PWM(motor.speed_pin, PWM_FREQUENCY)
         motor.pwm.start(0.0)
