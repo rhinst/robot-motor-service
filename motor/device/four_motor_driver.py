@@ -35,6 +35,7 @@ def initialize(options: Dict):
         GPIO.setup(motor.direction_pin, GPIO.OUT)
         GPIO.setup(motor.speed_pin, GPIO.OUT)
         motor.pwm = GPIO.PWM(motor.speed_pin, PWM_FREQUENCY)
+        motor.pwm.start(0.0)
 
 
 def get_measurements():
@@ -94,10 +95,7 @@ def _drive_motor(position: MotorPosition, direction: MotorDirection, speed: floa
     motor = motors[position]
     GPIO.output(motor.direction_pin, GPIO.LOW if direction == MotorDirection.BACKWARD else GPIO.HIGH)
     motor.direction = direction
-    if motor.state == MotorState.IDLE:
-        motor.pwm.start(speed * 100)
-    else:
-        motor.pwm.ChangeDutyCycle(speed * 100)
+    motor.pwm.ChangeDutyCycle(speed * 100)
     motor.speed = speed
     motor.state = MotorState.RUNNING
 
