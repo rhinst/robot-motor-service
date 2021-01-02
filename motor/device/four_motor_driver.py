@@ -111,11 +111,14 @@ def stop():
     logger.debug("Stopping!")
     for motor in motors.values():
         motor.speed = 0.0
-        motor.pwm.stop()
+        motor.pwm.ChangeDutyCycle(0.0)
+        motor.state = MotorState.IDLE
 
 
 def cleanup():
     try:
         stop()
+        for motor in motors.values():
+            motor.pwm.stop()
     finally:
         GPIO.cleanup()
