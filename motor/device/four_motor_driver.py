@@ -20,13 +20,15 @@ def initialize(options: Dict):
     global motors
     motors = {}
     for pos_name, pos_index in MotorPosition.__members__.items():
-        direction_pin = options["direction_pins"][pos_name.lower()]
-        speed_pin = options["speed_pins"][pos_name.lower()]
+        direction_pin = options["motors"][pos_name.lower()]["direction_pin"]
+        speed_pin = options["motors"][pos_name.lower()]["speed_pin"]
+        reverse_polarity = options["motors"][pos_name.lower()]["reverse"]
         motors[pos_index] = Motor(
             direction=MotorDirection.FORWARD,
             speed=0.0,
             direction_pin=direction_pin,
             speed_pin=speed_pin,
+            reverse_polarity=reverse_polarity,
             pwm=None,
             state=MotorState.IDLE
         )
@@ -96,6 +98,8 @@ def _drive_motor(position: MotorPosition, direction: MotorDirection, speed: floa
         raise ValueError("Maximum speed is 1.0")
     logger.debug(f"Driving motor at position {position} {direction} at {speed*100}% speed")
     motor = motors[position]
+    if motor.reverse_polarity:
+        direction = MotorDirection.BACKWARD if direction == MotorDirection.FORWARD else MotorDirection.FORWARD
     GPIO.output(motor.direction_pin, GPIO.LOW if direction == MotorDirection.BACKWARD else GPIO.HIGH)
     motor.direction = direction
     motor.pwm.ChangeDutyCycle(speed * 100)

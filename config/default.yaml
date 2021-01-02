@@ -7,13 +7,20 @@ redis:
 device:
   name: "four_motor_driver"
   options:
-    direction_pins:
-      front_left: 17
-      front_right: 3
-      rear_left: 5
-      rear_right: 7
-    speed_pins:
-      front_left: 27
-      front_right: 4
-      rear_left: 6
-      rear_right: 8
+    motors:
+      front_left:
+        direction_pin: 17
+        speed_pin: 27
+        reverse: 0
+      front_right:
+        direction_pin: 3
+        speed_pin: 4
+        reverse: 0
+      rear_left:
+        direction_pin: 5
+        speed_pin: 6
+        reverse: 0
+      rear_right:
+        direction_pin: 7
+        speed_pin: 8
+        reverse: 0

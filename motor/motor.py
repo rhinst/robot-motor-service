@@ -11,5 +11,6 @@ class Motor:
     speed: float
     direction_pin: int
     speed_pin: int
+    reverse_polarity: bool
     pwm: Union[GPIO.PWM, None]
     state: MotorState
