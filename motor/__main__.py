@@ -90,6 +90,7 @@ def main():
             # see if there is a command for me to execute
             redis_message = pubsub.get_message()
             if redis_message is not None:
+                logger.debug(f"Received a '{redis_message['command']}' message")
                 message = json.loads(redis_message['data'])
                 handlers[message["command"]](**message)
             # TODO: send quadrature encoder measurements back

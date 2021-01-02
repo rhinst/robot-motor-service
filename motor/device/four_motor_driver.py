@@ -9,7 +9,7 @@ from motor.enum import (
 )
 from motor.motor import Motor
 from motor.gpio import GPIO
-from motor.logging import  logger
+from motor.logging import logger
 
 PWM_FREQUENCY = 500
 
@@ -92,6 +92,7 @@ def _drive_motor(position: MotorPosition, direction: MotorDirection, speed: floa
         raise ValueError("Minimum speed is 0.0")
     if speed > 1:
         raise ValueError("Maximum speed is 1.0")
+    logger.debug(f"Driving motor at position {position} {direction} at {speed*100}% speed")
     motor = motors[position]
     GPIO.output(motor.direction_pin, GPIO.LOW if direction == MotorDirection.BACKWARD else GPIO.HIGH)
     motor.direction = direction
