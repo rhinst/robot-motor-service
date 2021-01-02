@@ -53,11 +53,25 @@ def handle_turn(**kwargs):
 
 
 def handle_turn_left(**kwargs):
-    pass
+    if 'speed' not in kwargs:
+        raise ValueError(f"Missing argument: speed")
+    speed = kwargs['speed']
+    if speed < 0.0:
+        raise ValueError("Minimum speed is 0.0")
+    if speed > 1.0:
+        raise ValueError("Maximum speed is 1.0")
+    motor.device.turn_left(speed)
 
 
 def handle_turn_right(**kwargs):
-    pass
+    if 'speed' not in kwargs:
+        raise ValueError(f"Missing argument: speed")
+    speed = kwargs['speed']
+    if speed < 0.0:
+        raise ValueError("Minimum speed is 0.0")
+    if speed > 1.0:
+        raise ValueError("Maximum speed is 1.0")
+    motor.device.turn_right(speed)
 
 
 def handle_stop(**_):
