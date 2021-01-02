@@ -90,19 +90,21 @@ def main():
             # see if there is a command for me to execute
             redis_message = pubsub.get_message()
             if redis_message is not None:
-                logger.debug(f"Received a '{redis_message['command']}' message")
                 message = json.loads(redis_message['data'])
+                logger.debug(f"Received a '{message['command']}' message")
                 handlers[message["command"]](**message)
             # TODO: send quadrature encoder measurements back
             # measurements = motor.device.get_measurements()
             # redis_client.publish("subsystem.motor.measurement", json.dumps(measurements))
             sleep(0.25)
-    except Exception:
-        logger.exception("Something bad happened")
+    except Exception as e:
+        logger.exception(f"Something bad happened: {str(e)}")
     finally:
+        logger.debug("Cleaning up")
         pubsub.close()
         redis_client.close()
         motor.device.cleanup()
+        logger.debug("Shutting down")
 
 
 if __name__ == '__main__':
