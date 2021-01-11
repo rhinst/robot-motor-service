@@ -78,6 +78,27 @@ def handle_stop(**_):
     motor.device.stop()
 
 
+def handle_drive_motor(**kwargs):
+    required = ['position', 'speed', 'direction']
+    for arg in required:
+        if arg not in kwargs:
+            raise ValueError(f"Missing argument: {arg}")
+    position = kwargs['position'].upper()
+    speed = kwargs['speed']
+    direction = kwargs['direction'].upper()
+    if position not in MotorPosition.__members__.keys():
+        raise ValueError(f"Unknown direction: {direction}")
+    position = MotorPosition.__members__[position]
+    if speed < 0.0:
+        raise ValueError("Minimum speed is 0.0")
+    if speed > 1.0:
+        raise ValueError("Maximum speed is 1.0")
+    if direction not in DriveDirection.__members__.keys():
+        raise ValueError(f"Unknown direction: {direction}")
+    direction = MotorDirection.__members__[direction.upper()]
+    motor.device.drive_motor(position, direction, speed)
+
+
 def main():
     environment: str = os.getenv("ENVIRONMENT", "dev")
     config: Dict = load_config(environment)
@@ -98,6 +119,7 @@ def main():
         "turn": handle_turn,
         "turn_left": handle_turn_left,
         "turn_right": handle_turn_right,
+        "drive_motor": handle_drive_motor,
     }
     try:
         while cycle([True]):

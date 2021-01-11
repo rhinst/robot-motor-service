@@ -60,7 +60,7 @@ def drive(direction: DriveDirection, speed: float):
         DriveDirection.BACKWARD: MotorDirection.BACKWARD,
     }
     for pos, motor in motors.items():
-        _drive_motor(pos, motor_dir[direction], speed)
+        drive_motor(pos, motor_dir[direction], speed)
 
 
 def turn(direction: TurnDirection, speed: float):
@@ -78,20 +78,20 @@ def turn(direction: TurnDirection, speed: float):
 
 
 def turn_left(speed: float):
-    _drive_motor(MotorPosition.FRONT_LEFT, MotorDirection.BACKWARD, speed)
-    _drive_motor(MotorPosition.REAR_LEFT, MotorDirection.BACKWARD, speed)
-    _drive_motor(MotorPosition.FRONT_RIGHT, MotorDirection.FORWARD, speed)
-    _drive_motor(MotorPosition.REAR_RIGHT, MotorDirection.FORWARD, speed)
+    drive_motor(MotorPosition.FRONT_LEFT, MotorDirection.BACKWARD, speed)
+    drive_motor(MotorPosition.REAR_LEFT, MotorDirection.BACKWARD, speed)
+    drive_motor(MotorPosition.FRONT_RIGHT, MotorDirection.FORWARD, speed)
+    drive_motor(MotorPosition.REAR_RIGHT, MotorDirection.FORWARD, speed)
 
 
 def turn_right(speed: float):
-    _drive_motor(MotorPosition.FRONT_RIGHT, MotorDirection.BACKWARD, speed)
-    _drive_motor(MotorPosition.REAR_RIGHT, MotorDirection.BACKWARD, speed)
-    _drive_motor(MotorPosition.FRONT_LEFT, MotorDirection.FORWARD, speed)
-    _drive_motor(MotorPosition.REAR_LEFT, MotorDirection.FORWARD, speed)
+    drive_motor(MotorPosition.FRONT_RIGHT, MotorDirection.BACKWARD, speed)
+    drive_motor(MotorPosition.REAR_RIGHT, MotorDirection.BACKWARD, speed)
+    drive_motor(MotorPosition.FRONT_LEFT, MotorDirection.FORWARD, speed)
+    drive_motor(MotorPosition.REAR_LEFT, MotorDirection.FORWARD, speed)
 
 
-def _drive_motor(position: MotorPosition, direction: MotorDirection, speed: float):
+def drive_motor(position: MotorPosition, direction: MotorDirection, speed: float):
     if speed < 0:
         raise ValueError("Minimum speed is 0.0")
     if speed > 1:
