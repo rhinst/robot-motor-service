@@ -135,7 +135,7 @@ def main():
             # TODO: send quadrature encoder measurements back
             # measurements = motor.device.get_measurements()
             # redis_client.publish("subsystem.motor.measurement", json.dumps(measurements))
-            sleep(0.25)
+            sleep(0.01)
     except Exception as e:
         logger.exception(f"Something bad happened: {str(e)}")
     finally:
