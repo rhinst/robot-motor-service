@@ -125,13 +125,14 @@ def main():
         while cycle([True]):
             # see if there is a command for me to execute
             redis_message = pubsub.get_message()
-            if redis_message is not None:
+            while redis_message is not None:
                 message = json.loads(redis_message['data'])
                 logger.debug(f"Received a '{message['command']}' message")
                 try:
                     handlers[message["command"]](**message)
                 except KeyError:
                     logger.error(f"Unrecognized command: {message['command']}")
+                redis_message = pubsub.get_message()
             # TODO: send quadrature encoder measurements back
             # measurements = motor.device.get_measurements()
             # redis_client.publish("subsystem.motor.measurement", json.dumps(measurements))
